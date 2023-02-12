@@ -22,18 +22,26 @@ class ABResult:
         result_list = []
         for r in self.replays:
             tie_flag = r.get_result() == "tie"
-            win_by_factories_elimination_flag = (
-                not tie_flag and r.get_result_by_factories_elimination() is not None
+            end_by_player_error_flag = (
+                r.get_result_by_player_error() is not None
             )
-            win_by_lichen_flag = not tie_flag and not win_by_factories_elimination_flag
+            end_by_factories_elimination_flag = (
+                not end_by_player_error_flag
+                and r.get_result_by_factories_elimination() is not None
+            )
+            end_by_running_out_of_turns = (
+                not end_by_player_error_flag
+                and not end_by_factories_elimination_flag
+            )
             result_dict = {
                 "replay_file": str(r.path),
                 "player_0_hash": r.player_revisions[0],
                 "player_1_hash": r.player_revisions[1],
                 "seed": r.seed,
                 "tie_flag": tie_flag,
-                "win_by_factories_elimination_flag": win_by_factories_elimination_flag,
-                "win_by_lichen_flag": win_by_lichen_flag,
+                "end_by_player_error_flag": end_by_player_error_flag,
+                "end_by_factories_elimination_flag": end_by_factories_elimination_flag,
+                "end_by_running_out_of_turns_flag": end_by_running_out_of_turns,
             }
             for i in range(2):
                 player_hash = r.player_revisions[i]

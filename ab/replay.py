@@ -74,6 +74,22 @@ class Replay:
         return None
 
     @lru_cache()
+    def get_result_by_player_error(self) -> Optional[str]:
+        last_actions_dict = self.data["actions"][-1]
+        player_error_flag = [
+            last_actions_dict["player_0"] is None,
+            last_actions_dict["player_1"] is None,
+        ]
+
+        if player_error_flag[0] and player_error_flag[1]:
+            return "tie"
+        if player_error_flag[0]:
+            return "win_1"
+        if player_error_flag[1]:
+            return "win_0"
+        return None
+
+    @lru_cache()
     def get_result_by_n_lichen(self) -> str:
         player_lichen_strains = self.get_final_lichen_strains()
         lichen_board = self.get_final_board("lichen")
@@ -89,6 +105,9 @@ class Replay:
 
     @lru_cache()
     def get_result(self) -> str:
+        result = self.get_result_by_player_error()
+        if result is not None:
+            return result
         result = self.get_result_by_factories_elimination()
         if result is not None:
             return result
