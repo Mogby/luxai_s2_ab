@@ -28,15 +28,15 @@ class ABResult:
             win_by_lichen_flag = not tie_flag and not win_by_factories_elimination_flag
             result_dict = {
                 "replay_file": str(r.path),
-                "player_0_hash": r.player_hashes[0],
-                "player_1_hash": r.player_hashes[1],
+                "player_0_hash": r.player_revisions[0],
+                "player_1_hash": r.player_revisions[1],
                 "seed": r.seed,
                 "tie_flag": tie_flag,
                 "win_by_factories_elimination_flag": win_by_factories_elimination_flag,
                 "win_by_lichen_flag": win_by_lichen_flag,
             }
             for i in range(2):
-                player_hash = r.player_hashes[i]
+                player_hash = r.player_revisions[i]
                 assert player_hash in (self.rev_a.revision, self.rev_b.revision)
                 player_revision = "a" if player_hash == self.rev_a.revision else "b"
                 result_dict.update(
@@ -46,7 +46,7 @@ class ABResult:
                             i
                         ],
                         f"{player_revision}_win_flag": (
-                            r.get_winner_hash() == r.player_hashes[i]
+                            r.get_winner_hash() == r.player_revisions[i]
                         ),
                     }
                 )

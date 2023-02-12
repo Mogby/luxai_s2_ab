@@ -3,14 +3,14 @@ from typing import Optional
 
 from plumbum import LocalPath
 
-from ab.git import make_agent_revision_from_repo_path
+from ab.agent import AgentRevision
 from ab.run import run_ab
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--repo-a", type=LocalPath)
-    parser.add_argument("--repo-b", type=LocalPath)
+    parser.add_argument("--agent-a", type=LocalPath)
+    parser.add_argument("--agent-b", type=LocalPath)
     parser.add_argument("--workdir", type=LocalPath)
     parser.add_argument("--n-seeds", type=int, default=10)
     parser.add_argument("--n-jobs", type=int, required=False)
@@ -18,18 +18,18 @@ def parse_args() -> argparse.Namespace:
 
 
 def main(
-    repo_a: LocalPath,
-    repo_b: LocalPath,
+    agent_a: LocalPath,
+    agnet_b: LocalPath,
     workdir: LocalPath,
     n_seeds: int,
     n_jobs: Optional[int],
 ) -> None:
-    rev_a = make_agent_revision_from_repo_path(repo_a)
-    rev_b = make_agent_revision_from_repo_path(repo_b)
+    rev_a = AgentRevision(script_path=agent_a, revision="A")
+    rev_b = make_agent_revision_from_repo_path(script_path=agent_b, revision="B")
     result = run_ab(rev_a, rev_b, range(10), workdir / "replays")
     result.get_result_df().to_csv(workdir / "result.csv", index=False)
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.repo_a, args.repo_b, args.workdir, args.n_seeds, args.n_jobs)
+    main(args.agent_a, args.agent_b, args.workdir, args.n_seeds, args.n_jobs)

@@ -29,7 +29,7 @@ def run_game_and_get_replay(
     finished = True
     return Replay(
         path=replay_file,
-        player_hashes=[rev_a.revision, rev_b.revision],
+        player_revisions=[rev_a.revision, rev_b.revision],
         seed=seed,
         finished=finished,
     )

@@ -10,7 +10,7 @@ from plumbum import LocalPath
 @dataclass
 class Replay:
     path: Optional[LocalPath]
-    player_hashes: List[str]
+    player_revisions: List[str]
     seed: int
     finished: bool
 
@@ -99,4 +99,4 @@ class Replay:
         result = self.get_result()
         if result == "tie":
             return None
-        return self.player_hashes[0] if result == "win_0" else self.player_hashes[1]
+        return self.player_revisions[0] if result == "win_0" else self.player_revisions[1]
