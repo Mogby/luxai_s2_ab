@@ -19,13 +19,13 @@ def parse_args() -> argparse.Namespace:
 
 def main(
     agent_a: LocalPath,
-    agnet_b: LocalPath,
+    agent_b: LocalPath,
     workdir: LocalPath,
     n_seeds: int,
     n_jobs: Optional[int],
 ) -> None:
     rev_a = AgentRevision(script_path=agent_a, revision="A")
-    rev_b = make_agent_revision_from_repo_path(script_path=agent_b, revision="B")
+    rev_b = AgentRevision(script_path=agent_b, revision="B")
     result = run_ab(rev_a, rev_b, range(10), workdir / "replays")
     result.get_result_df().to_csv(workdir / "result.csv", index=False)
 
