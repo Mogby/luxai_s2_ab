@@ -1,4 +1,4 @@
-# LuxAIS2AB
+# luxai_s2_ab
 
 An A/B testing framework for the Lux AI Season 2 competition.
 
