@@ -8,6 +8,14 @@ You can run A/B tests either from the `run_ab.ipynb` notebook or by running the 
 
 # Script Usage
 
+## Example
+
+```
+python ./run_ab.py --agent-a ./sub_a/main.py --agent-b ./sub_b/main.py --workdir ./workdir --n-seeds 10
+```
+
+## Help
+
 ```
 usage: run_ab.py [-h] [--agent-a AGENT_A] [--agent-b AGENT_B]
                  [--workdir WORKDIR] [--n-seeds N_SEEDS] [--n-jobs N_JOBS]
