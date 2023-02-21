@@ -2,6 +2,11 @@
 
 An A/B testing framework for the Lux AI Season 2 competition.
 
+# Requirements
+
+`python >= 3.7`, `pip`
+Run `pip install -r ./requirements.txt`
+
 # Run
 
 You can run A/B tests either from the `run_ab.ipynb` notebook or by running the `run_ab.py` script.
