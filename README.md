@@ -4,8 +4,9 @@ An A/B testing framework for the Lux AI Season 2 competition.
 
 # Requirements
 
-`python >= 3.7`, `pip`
-Run `pip install -r ./requirements.txt`
+`python >= 3.7`, `pip` are required.
+
+Run `pip install -r ./requirements.txt` to install required python packages.
 
 # Run
 
