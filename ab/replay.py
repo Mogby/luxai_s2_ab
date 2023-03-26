@@ -12,7 +12,6 @@ class Replay:
     path: Optional[LocalPath]
     player_revisions: List[str]
     seed: int
-    finished: bool
 
     def __hash__(self) -> int:
         return hash(self.path)

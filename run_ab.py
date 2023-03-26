@@ -1,4 +1,5 @@
 import argparse
+import logging
 from typing import Optional
 
 from plumbum import LocalPath
@@ -31,5 +32,6 @@ def main(
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
     args = parse_args()
     main(args.agent_a, args.agent_b, args.workdir, args.n_seeds, args.n_jobs)
