@@ -22,16 +22,13 @@ class ABResult:
         result_list = []
         for r in self.replays:
             tie_flag = r.get_result() == "tie"
-            end_by_player_error_flag = (
-                r.get_result_by_player_error() is not None
-            )
+            end_by_player_error_flag = r.get_result_by_player_error() is not None
             end_by_factories_elimination_flag = (
                 not end_by_player_error_flag
                 and r.get_result_by_factories_elimination() is not None
             )
             end_by_running_out_of_turns = (
-                not end_by_player_error_flag
-                and not end_by_factories_elimination_flag
+                not end_by_player_error_flag and not end_by_factories_elimination_flag
             )
             result_dict = {
                 "replay_file": str(r.path),

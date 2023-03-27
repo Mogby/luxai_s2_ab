@@ -117,4 +117,6 @@ class Replay:
         result = self.get_result()
         if result == "tie":
             return None
-        return self.player_revisions[0] if result == "win_0" else self.player_revisions[1]
+        return (
+            self.player_revisions[0] if result == "win_0" else self.player_revisions[1]
+        )

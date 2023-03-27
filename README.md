@@ -25,16 +25,23 @@ python ./run_ab.py --agent-a ./sub_a/main.py --agent-b ./sub_b/main.py --workdir
 ```
 usage: run_ab.py [-h] [--agent-a AGENT_A] [--agent-b AGENT_B]
                  [--workdir WORKDIR] [--n-seeds N_SEEDS] [--n-jobs N_JOBS]
+                 [--disable-mirroring] [--reuse-existing-replays]
 
 optional arguments:
-  -h, --help         show this help message and exit
-  --agent-a AGENT_A  Path to main.py of Agent A
-  --agent-b AGENT_B  Path to main.py of Agent B
-  --workdir WORKDIR  Replay data and A/B results will be written to this
-                     directory
-  --n-seeds N_SEEDS  Number of seeds to run. For each seed two games will be
-                     played: one with Agent A as player 0 and another with
-                     Agent B as player 0.
-  --n-jobs N_JOBS    Number of games to run simultaniously. Is equal to the
-                     number of CPU cores by default.
+  -h, --help            show this help message and exit
+  --agent-a AGENT_A     path to main.py of agent A
+  --agent-b AGENT_B     path to main.py of agent B
+  --workdir WORKDIR     replay data and A/B results will be written to this
+                        directory
+  --n-seeds N_SEEDS     number of seeds to run, for each seed two games will
+                        be played: one with agent A as player 0 and another
+                        with agent B as player 0
+  --n-jobs N_JOBS       number of games to run simultaniously, is equal to the
+                        number of CPU cores by default
+  --disable-mirroring   if set, only one game will be played for each seed:
+                        agent A will always go first and agent B will always
+                        go second
+  --reuse-existing-replays
+                        if set, existing replay files will be reused instead
+                        of being generated again
 ```
