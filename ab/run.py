@@ -25,18 +25,25 @@ def run_game(
 
 
 def run_game_and_get_replay(
-    rev_a: AgentRevision, rev_b: AgentRevision, seed: int, replay_file: LocalPath
+    rev_a: AgentRevision,
+    rev_b: AgentRevision,
+    seed: int,
+    replay_file: LocalPath,
+    reuse_existing_data: bool = False,
 ) -> Replay:
-    replay_file = replay_file
-    retcode, stdout, stderr = run_game(rev_a.script_path, rev_b.script_path, seed, replay_file)
-
-    if retcode != 0:
-        logging.error(f"game finished with non-zero code: {retcode}")
-        logging.error(f"seed: {seed}")
-        logging.error(f"rev_a: {rev_a.revision}")
-        logging.error(f"rev_b: {rev_b.revision}")
-        logging.error(f"stdout:\n\u001b[36m{stdout.strip()}\u001b[0m")
-        logging.error(f"stderr:\n\u001b[31m{stderr.strip()}\u001b[0m")
+    if not reuse_existing_data or not replay_file.exists():
+        retcode, stdout, stderr = run_game(
+            rev_a.script_path, rev_b.script_path, seed, replay_file
+        )
+        if retcode != 0:
+            logging.error(f"game finished with non-zero code: {retcode}")
+            logging.error(f"seed: {seed}")
+            logging.error(f"rev_a: {rev_a.revision}")
+            logging.error(f"rev_b: {rev_b.revision}")
+            logging.error(f"stdout:\n\u001b[36m{stdout.strip()}\u001b[0m")
+            logging.error(f"stderr:\n\u001b[31m{stderr.strip()}\u001b[0m")
+    else:
+        logging.info(f"reusing data from {replay_file}")
 
     return Replay(
         path=replay_file,
@@ -51,6 +58,8 @@ def run_ab(
     seeds: Iterable[int],
     replays_dir: LocalPath,
     n_jobs: Optional[int] = None,
+    enable_mirroring: bool = True,
+    reuse_existing_replays: bool = True,
 ) -> ABResult:
     if n_jobs is None:
         n_jobs = -1
@@ -66,16 +75,19 @@ def run_ab(
                 rev_b,
                 seed,
                 replays_dir / get_replay_file_name(rev_a, rev_b, seed),
+                reuse_existing_data=reuse_existing_replays,
             )
         )
-        # swap rev_a and rev_b
-        jobs.append(
-            delayed(run_game_and_get_replay)(
-                rev_b,
-                rev_a,
-                seed,
-                replays_dir / get_replay_file_name(rev_b, rev_a, seed),
+        if enable_mirroring:
+            # swap rev_a and rev_b
+            jobs.append(
+                delayed(run_game_and_get_replay)(
+                    rev_b,
+                    rev_a,
+                    seed,
+                    replays_dir / get_replay_file_name(rev_b, rev_a, seed),
+                    reuse_existing_data=reuse_existing_replays,
+                )
             )
-        )
     replays = Parallel(n_jobs=n_jobs, backend="threading")(tqdm(jobs))
     return ABResult(rev_a, rev_b, replays)
